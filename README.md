@@ -19,13 +19,13 @@
 - 출입자 명부가 허위 작성되는 등의 문제점 발견
 - 출입자 명부를 QR코드 기반의 시스템을 구축해 개선<br>
 
-![기존 시스템1/2](./mdsrc/why-origin-system.png)<br>
+![기존 시스템1/2](./mdsrc/why--origin-system.png)<br>
 
 #### 시범사업 시작
 
 - 시설관리자용으로 앱설치는 2020년 6월 10일 이후 설치 가능할 것<br>
 
-![기존 시스템2/2](./mdsrc/why-origin-system2.png)<br>
+![기존 시스템2/2](./mdsrc/why--origin-system2.png)<br>
 
 #### 문제점
 
@@ -40,7 +40,7 @@
 
   <br>
 
-![기존 시스템 문제점](./mdsrc/why-problem.png)<br>
+![기존 시스템 문제점](./mdsrc/why--problem.png)<br>
 
 ### Save Our Signal팀의 제안 및 기대 효과
 
@@ -65,7 +65,7 @@
 
 <br>
 
-![우리들의 제안1/3](./mdsrc/why-suggestion.png)<br>
+![우리들의 제안1/3](./mdsrc/why--suggestion.png)<br>
 
 - `지금 문제는 속도다!`
 - 한시라도 빨리 포스트 코로나 시대를 효과적을 준비하고 대비해야 하는 촌각을 다투는 이 민감한 시기에 빠른 속도로 도움이 되는 어플리케이션을 배포하는 것이 중요함
@@ -74,11 +74,11 @@
 
 <br>
 
-![우리들의 제안2/3](./mdsrc/why-suggestion2.png)<br>
+![우리들의 제안2/3](./mdsrc/why--suggestion2.png)<br>
 
 - 기존의 기능 `QR코드스캔`과 `일일방문자 조회`, 그리고 `직원등록` 서비스 뿐만아니라 인공지능과 블록체인 기반의 지능형 서비스를 제공해 지능형 ANTI-COVID19 전자 출입 기록 및 시각화 시스템을 제안함
 
-![우리들의 제안3/3](./mdsrc/why-suggestion3.png)<br>
+![우리들의 제안3/3](./mdsrc/why--suggestion3.png)<br>
 
 ### 본 서비스 상용화로 얻어질 효과
 
@@ -87,7 +87,7 @@
 
 <br>
 
-![상용화 목표](./mdsrc/why-result.png)<br>
+![상용화 목표](./mdsrc/why--result.png)<br>
 
 ## 2. HOW : 어떻게 만들 생각인가
 
@@ -96,20 +96,20 @@
 - 때문에 시연을 위한 COPY 페이지를 구성할 것
   <br>
 
-![시연 계획1](./mdsrc/how1.png)<br>
+![시연 계획1](./mdsrc/how_1.png)<br>
 
 - 핵심 적인 기능으로 우선 업소별 실시간 수용 인원, 현재 인원, 대기인원을 나타내고 예상 대기 시간, 예약 및 예약 취소 기능 등을 한 눈에 볼 수 있게 구성할 것
 
 - 예상 대기 시간은 API로 부터 예측 데이터를 전송 받을 것
   <br>
 
-![시연 계획2](./mdsrc/how2.png)<br>
+![시연 계획2](./mdsrc/how_2.png)<br>
 
 - 지속적으로 창조되고 개선될 아이디어 들을 기록하여 킬러 서비스를 만드는데 노력할 것
 
 <br>
 
-![시연 계획3](./mdsrc/how3.png)<br>
+![시연 계획3](./mdsrc/how_3.png)<br>
 
 ## 3. WHAT : 그래서 우리가 만든 결과물은
 
