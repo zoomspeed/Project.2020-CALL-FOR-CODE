@@ -1,0 +1,32 @@
+{
+  "demo-location": [
+    {
+      "address_name": "서울 용산구 이태원동 127-15",
+      "category_group_code": "FD6",
+      "category_group_name": "음식점",
+      "category_name": "음식점 > 술집",
+      "distance": "",
+      "id": "1974912405",
+      "phone": "070-4105-2234",
+      "place_name": "카사코로나 서울",
+      "place_url": "http://place.map.kakao.com/1974912405",
+      "road_address_name": "서울 용산구 보광로60길 7",
+      "x": "126.994533022415",
+      "y": "37.5340999420247"
+    },
+    {
+      "address_name": "서울 용산구 이태원동 34-149",
+      "category_group_code": "FD6",
+      "category_group_name": "음식점",
+      "category_name": "음식점 > 한식 > 국수",
+      "distance": "",
+      "id": "1952478679",
+      "phone": "02-790-7300",
+      "place_name": "명동교자 이태원점",
+      "place_url": "http://place.map.kakao.com/1952478679",
+      "road_address_name": "서울 용산구 녹사평대로 136",
+      "x": "126.990949104616",
+      "y": "37.5308561175718"
+    }
+  ]
+}
