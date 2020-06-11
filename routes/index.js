@@ -22,7 +22,10 @@ router.use('/attend', function(req, res, next) {
     db.saveUser(decryptInfo);
     db.getUserList();
   }
-  res.render('index', { title: decryptInfo});
+  const result = JSON.parse(decryptInfo)
+  
+  //res.render('index', { name: result.name});
+  res.render('index.ejs', { name: result.name});
 });
 
 router.use('/getUserList', async function(req, res, next) {
@@ -30,6 +33,16 @@ router.use('/getUserList', async function(req, res, next) {
   const dbSelect = await db.getUserList();
   setTimeout(function(){
     return res.json(dbSelect);
+  },1000);
+
+});
+
+router.use('/getUserInfo', async function(req, res, next) {
+
+  const dbSelect = await db.getUserList();
+  //console.log(dbSelect);
+  setTimeout(function(){
+    res.render('userList.ejs', {userList : dbSelect});
   },1000);
 
 });
