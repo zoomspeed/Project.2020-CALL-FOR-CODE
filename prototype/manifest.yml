@@ -1,0 +1,5 @@
+---
+applications:
+  - name: sos
+    random-route: false
+    memory: 64M

@@ -27,6 +27,20 @@
       "road_address_name": "서울 용산구 녹사평대로 136",
       "x": "126.990949104616",
       "y": "37.5308561175718"
+    },
+    {
+      "address_name": "서울 용산구 이태원동 36-18",
+      "category_group_code": "AC5",
+      "category_group_name": "학원",
+      "category_name": "교육,학문 > 학원 > 어학원 > 영어학원",
+      "distance": "",
+      "id": "2027544874",
+      "phone": "02-793-0365",
+      "place_name": "지엘씨아카데미",
+      "place_url": "http://place.map.kakao.com/2027544874",
+      "road_address_name": "서울 용산구 녹사평대로26길 38",
+      "x": "126.991922010173",
+      "y": "37.5314652650441"
     }
   ]
 }
