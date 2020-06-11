@@ -6,3 +6,5 @@ README.md
 .gitignore
 logs
 *.log
+로컬JSON.js
+atlas.js

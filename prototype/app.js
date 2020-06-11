@@ -1,3 +1,4 @@
+/** Require Setting **/
 const http = require("http"),
   express = require("express"),
   path = require("path"),
@@ -5,13 +6,20 @@ const http = require("http"),
   bodyParser = require("body-parser"),
   cookieParser = require("cookie-parser"),
   expressErrorHandler = require("express-error-handler");
-
-const MongoClient = require("mongodb").MongoClient;
-
-const app = express();
-const router = express.Router();
 require("dotenv").config();
 
+/** Database Setting **/
+const MongoClient = require("mongodb").MongoClient;
+const uri =
+  "mongodb+srv://rhie:" + process.env.DB_PWD + "@rhie-b1dyf.mongodb.net/";
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+/** Route **/
+const app = express();
+app.set("port", process.env.PORT || 3000);
 app.set("views", __dirname + "/public");
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -19,6 +27,8 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use("/public", static(path.join(__dirname, "public")));
 
+const router = express.Router();
+// Visitor --> Map 정보 보기
 router.route("/map").get(function (req, res) {
   let query = req.query.qry;
   let context = {
@@ -30,18 +40,11 @@ router.route("/map").get(function (req, res) {
   });
 });
 
-router.route("/apiTest").get(function (req, res) {
-  const uri = "mongodb+srv://rhie:12341234@rhie-b1dyf.mongodb.net/";
-  const client = new MongoClient(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+//Database 서버와 연결이 잘 되었는지 확인
+router.route("/apitest").get(function (req, res) {
   client.connect((err, client) => {
-    console.log("connecting");
+    console.log("/apitest");
     const collection = client.db("ratlas").collection("users");
-    // collection.find({}).toArray(function (err, result) {
-    //   console.log(result);
-    // });
     collection.findOne({}, function (err, result) {
       if (err) throw err;
       res.send(result);
@@ -52,6 +55,7 @@ router.route("/apiTest").get(function (req, res) {
 
 app.use("/", router);
 
+/** Error Handle **/
 const errPath = path.join(__dirname, "public", "404.html");
 const errHandler = expressErrorHandler({
   static: {
@@ -62,6 +66,9 @@ const errHandler = expressErrorHandler({
 app.use(expressErrorHandler.httpError(404));
 app.use(errHandler);
 
-http.createServer(app).listen(3000, function () {
-  console.log("Server Started");
+/** Server Starter **/
+http.createServer(app).listen(app.get("port"), function () {
+  console.log("=======================");
+  console.log("|   Save Our Signal   |");
+  console.log("=======================");
 });
