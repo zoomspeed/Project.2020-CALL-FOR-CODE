@@ -8,6 +8,8 @@ const http = require("http"),
   expressErrorHandler = require("express-error-handler"),
   QR = require("qrcode"),
   crypto = require("crypto");
+const user = require("./public/data/user.json");
+let idx = 0;
 const { algorithm, key, iv } = require("./config.json");
 require("dotenv").config();
 
@@ -33,23 +35,20 @@ app.use("/public", static(path.join(__dirname, "public")));
 /** Route **/
 const router = express.Router();
 
-//////QR 생성하기//////나중에 "/QR"로 라우트 할 것임
-router.get("/", function (req, res) {
-  const temperature = Math.random() * (39 - 35.7) + 35.7; // 체온 랜덤 생성
-
-  const data = {
-    name: "박찬형",
-    phone: "010-1234-5678",
-    temperature: temperature.toFixed(1),
-  }; // QR 데이터 생성
+//////QR 생성하기//////
+router.get("/QR", function (req, res) {
+  // 체온 랜덤 생성
+  const temperature = Math.random() * (39 - 35.7) + 35.7;
+  const data = user[idx];
+  idx++;
+  data.temperature = temperature.toFixed(1);
 
   const result = encrypt(JSON.stringify(data)).encryptedData; // 암호화
-
   const url = "https://sos.mybluemix.net/attend?qr=" + result; // 스캔 시 전송할 url 만들기
 
   QR.toDataURL(url, { errorCorrectionLevel: "L" }, function (err, code) {
     res.render("index", { title: "VISITOR", qr: code });
-  }); // QR코드 생성
+  });
 });
 
 //////QR 데이터 확인//////
@@ -60,9 +59,23 @@ router.get("/attend", function (req, res) {
   const data = { iv: iv, encryptedData: qr };
 
   // 복호화
-  const result = decrypt(data);
+  const decryptData = decrypt(data);
 
-  res.render("qr", { result: result });
+  client.connect((err, client) => {
+    console.log("/attend");
+    const collection = client.db("sos").collection("userInOutHistory");
+
+    collection.insertOne(
+      JSON.parse(decryptData),
+      { forceServerObjectId: true },
+      function (err, result) {
+        if (err) throw err;
+        console.log(result);
+        res.render("qr", { result: result });
+        client.close();
+      }
+    );
+  });
 });
 
 //////Visitor --> Map 정보 보기//////
@@ -81,7 +94,7 @@ router.route("/map").get(function (req, res) {
 router.route("/apitest").get(function (req, res) {
   client.connect((err, client) => {
     console.log("/apitest");
-    const collection = client.db("ratlas").collection("users");
+    const collection = client.db("sos").collection("userInOutHistory");
     collection.findOne({}, function (err, result) {
       if (err) throw err;
       res.send(result);
