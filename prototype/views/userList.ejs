@@ -237,31 +237,40 @@
 var getComment = function(index, pageSize, totalPage){
 
 var html = '';
-
 if(index<0) index = 0;
 
+for(var i=0; i<6; i++){
+	$($('#pagination li')[i]).removeClass('active')
+}
+//if(index!=0)
+	$($('#pagination li')[index+1]).addClass('active')
+
 var pageGroup = index*pageSize;
+var cnt = 1;
 try{
    
       for (var i=pageGroup; (i<pageGroup+pageSize && i<totalPage);  i++){
          
-         
-         var nonMaskingCount = Math.ceil((initData.data[i].name.length)/2);
+				 var nonMaskingCount = 0;
+				 if(initData.data[i].name!==null)
+         		nonMaskingCount = Math.ceil((initData.data[i].name.length)/2);
          var maskingMemId = '';
 
-         maskingMemId += 
+				 if(initData.data[i].name!==null){
+					 
+					maskingMemId += 
             initData
             .data[i]
             .name
-            .substr(0, nonMaskingCount);
-         
-         for(var k=nonMaskingCount; k<initData.data[i].name.length; k++){
-            maskingMemId += '*';
-         }
-
-         
-         //console.log(maskingMemId);
-
+						.substr(0, nonMaskingCount);
+						
+						for(var k=nonMaskingCount; k<initData.data[i].name.length; k++){
+            	maskingMemId += '*';
+         		}         
+				 }
+        
+         //console.log(maskingMemId);/ ?;
+				var resultPhone = (initData.data[i].phone===null)? '': initData.data[i].phone.substr(0,9)+'****'
          html+=`<tr>
                   <td>
                      <span class="custom-checkbox">
@@ -270,20 +279,23 @@ try{
                      </span>
                   </td>
                         <td>${maskingMemId}</td>
-                        <td>thomashardy@mail.com</td>
-                  <td>89 Chiaroscuro Rd, Portland, USA</td>
-                        <td>${initData.data[i].phone.substr(0,9)+'****'}</td>
+                        <td>${initData.data[i].in===undefined? '미입장' : initData.data[i].in}</td>
+                  			<td id="${initData.data[i]._id}" class="userOutButton${cnt++}">${initData.data[i].out===undefined || initData.data[i].out===null? '미퇴장' : initData.data[i].out}</td>
+                        <td>${resultPhone}</td>
 
                </tr>
-               `;
-      }
+							 `;
+							 
+
+							 
+			}
+			
 }catch(e){
    console.log(e)
    return;
 }
-
-
 $('#userTable').html(html);
+setOutEvent();
 
 return;
 }
@@ -315,8 +327,7 @@ $(document).ready(function(){
    initData = JSON.parse('<%-JSON.stringify(userList)%>');
 
    initData.data.forEach( (element,idx) => {
-      initData.data[idx].innerTime = '1234';
-      initData.data[idx].outerTime = '1234';
+
    });
    var tableTemplate = '';
    var curIdx = 0;
@@ -343,9 +354,31 @@ $(document).ready(function(){
    console.log(tableTemplate)
    $('#userTable').append(tableTemplate);
    */
-   getComment(0,5,initData.data.length)
+	 getComment(0,5,initData.data.length)
+	 setOutEvent();
 });
+
+function setOutEvent() {
+	for(let i=1; i<=5; i++){
+		$('.userOutButton'+i).on('click', function(){
+			$('#changeIndex').val($($('.userOutButton'+(i))).attr('id'))
+			//if($($('.userOutButton'+(i))).val()!='미퇴장' )
+				//return
+			 $.ajax({
+            url:'/org/leave',
+            type:'post',
+            data:{_id : $('#changeIndex').val()},
+            success:function(data){
+								alert('퇴장 처리가 완료되었습니다.')
+								location.reload();
+            }
+        })
+		 })
+	 }
+	 
+}
 </script>
+<input type="hidden" id="changeIndex" value="0">
 </head>
 <body>
     <div class="container">
@@ -353,11 +386,11 @@ $(document).ready(function(){
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
-                  <h2>Manage <b>Employees</b></h2>
+                  <h2>인원 관리 <b>상황실</b></h2>
                </div>
                <div class="col-sm-6">
-                  <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Employee</span></a>
-                  <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>                  
+                  <!-- <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Employee</span></a>
+                  <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>                   -->
                </div>
                 </div>
             </div>
@@ -401,14 +434,14 @@ $(document).ready(function(){
                 </tbody>
             </table>
          <div class="clearfix">
-                <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-                <ul class="pagination">
-                    <li class="page-item disabled"><a href="javascript:" onclick="getComment(0,5,initData.data.length);">Previous</a></li>
-                    <li class="page-item"><a href="javascript:" onclick="getComment(1,5,initData.data.length);" class="page-link">1</a></li>
-                    <li class="page-item"><a href="javascript:" onclick="getComment(2,5,initData.data.length);" class="page-link">2</a></li>
-                    <li class="page-item active"><a href="javascript:" onclick="getComment(3,5,initData.data.length);" class="page-link">3</a></li>
-                    <li class="page-item"><a href="javascript:" onclick="getComment(4,5,initData.data.length);" class="page-link">4</a></li>
-                    <li class="page-item"><a href="javascript:" onclick="getComment(5,5,initData.data.length);" class="page-link">5</a></li>
+                <div class="hint-text">Showing entries</div>
+                <ul class="pagination" id="pagination">
+                    <li class="page-item"><a id="idx1" href="javascript:" onclick="getComment(0,5,initData.data.length);">Previous</a></li>
+                    <li class="page-item active"><a id="idx2" href="javascript:" onclick="getComment(0,5,initData.data.length);" class="page-link">1</a></li>
+                    <li class="page-item"><a id="idx3" href="javascript:" onclick="getComment(1,5,initData.data.length);" class="page-link">2</a></li>
+                    <li class="page-item"><a id="idx4" href="javascript:" onclick="getComment(2,5,initData.data.length);" class="page-link">3</a></li>
+                    <li class="page-item"><a id="idx5" href="javascript:" onclick="getComment(3,5,initData.data.length);" class="page-link">4</a></li>
+                    <li class="page-item"><a id="idx6" href="javascript:" onclick="getComment(4,5,initData.data.length);" class="page-link">5</a></li>
                     <li class="page-item"><a href="javavscript:" onclick="getComment(initData.data.length/5,5,initData.data.length);" class="page-link">Next</a></li>
                 </ul>
             </div>

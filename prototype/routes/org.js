@@ -55,15 +55,16 @@ router.post("/leave", function (req, res) {
   MongoClient.connect(async (err, client) => {
     const collection = client.db("sos").collection("userInOutHistory");
 
-    const res = await collection.findOne({
+    const doc = await collection.findOne({
       _id: new ObjectID(paramId),
     });
 
     const myquery = { _id: new ObjectID(paramId) };
-    const newvalues = { $set: { ...res, out: new Date() } };
-    collection.updateOne(myquery, newvalues, function (err, res) {
+    const newvalues = { $set: { ...doc, out: new Date() } };
+    collection.updateOne(myquery, newvalues, function (err, result) {
       if (err) throw err;
       console.log("1 document updated");
+      res.send({result:"success"})
     });
   });
 });
