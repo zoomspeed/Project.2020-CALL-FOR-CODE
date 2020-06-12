@@ -9,7 +9,7 @@ router.get("/", function (req, res) {
 });
 
 // 출입
-router.get("/attend", function (req, res) {
+router.get("/attend", (req, res) => {
   const qr = req.query.qr;
 
   // 복호화 데이터 생성
