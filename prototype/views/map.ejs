@@ -1,148 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <title>다음 지도 API</title>
-    <style>
-      .form-control-borderless {
-        border: none;
-      }
 
-      .form-control-borderless:hover,
-      .form-control-borderless:active,
-      .form-control-borderless:focus {
-        border: none;
-        outline: none;
-        box-shadow: none;
-      }
-    </style>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
-      integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
-      crossorigin="anonymous"
-    />
-  </head>
-  <body>
-    <div class="container">
-      <br />
-      <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-8">
-          <form class="card card-sm" action="/user/map" method="get">
-            <div class="card-body row no-gutters align-items-center">
-              <div class="col-auto">
-                <i class="fas fa-search h4 text-body"></i>
-              </div>
-              <!--end of col-->
-              <div class="col">
-                <input
-                  name="qry"
-                  class="form-control form-control-lg form-control-borderless"
-                  type="search"
-                  placeholder="장소 및 위치 검색"
-                />
-              </div>
-              <!--end of col-->
-              <div class="col-auto">
-                <button class="btn btn-lg btn-success" type="submit">
-                  검색
-                </button>
-              </div>
-              <!--end of col-->
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>다음 지도 API</title>
+  <style>
+    .form-control-borderless {
+      border: none;
+    }
+
+    .form-control-borderless:hover,
+    .form-control-borderless:active,
+    .form-control-borderless:focus {
+      border: none;
+      outline: none;
+      box-shadow: none;
+    }
+
+    .info-window {
+      width: 100%;
+      padding: .5rem;
+      text-align: center;
+      background-color: rgba(135, 206, 235, 0.7);
+      border: 2px solid blue;
+    }
+
+    .info-window .title {
+      display: flex;
+      flex-wrap: wrap;
+      font-weight: bold;
+      padding-top: .5rem;
+    }
+
+    .info-window .count {
+      font-size: 2rem;
+      color: red;
+      font-weight: bold;
+      padding-bottom: .5rem;
+    }
+  </style>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
+    integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous" />
+</head>
+
+<body>
+  <div class="container">
+    <br />
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-10 col-lg-8">
+        <form class="card card-sm" action="/user/map" method="get">
+          <div class="card-body row no-gutters align-items-center">
+            <div class="col-auto">
+              <i class="fas fa-search h4 text-body"></i>
             </div>
-          </form>
-        </div>
-        <!--end of col-->
+            <!--end of col-->
+            <div class="col">
+              <input name="qry" class="form-control form-control-lg form-control-borderless" type="search"
+                placeholder="장소 및 위치 검색" />
+            </div>
+            <!--end of col-->
+            <div class="col-auto">
+              <button class="btn btn-lg btn-success" type="submit">
+                검색
+              </button>
+            </div>
+            <!--end of col-->
+          </div>
+        </form>
       </div>
+      <!--end of col-->
     </div>
-    <div id="map" style="width: 100%; height: 90vh;"></div>
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-      crossorigin="anonymous"
-    ></script>
-    <script src="<%=API_KEY%>"></script>
-    <script>
-      // 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
-      var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+  </div>
+  <div id="map" style="width: 100%; height: 90vh;"></div>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+    crossorigin="anonymous"></script>
+  <script src="<%=API_KEY%>"></script>
+  <script>
+    var mapContainer = document.getElementById("map"), // 지도를 표시할 div
+      mapOption = {
+        center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+        level: 3, // 지도의 확대 레벨
+      };
 
-      var mapContainer = document.getElementById("map"), // 지도를 표시할 div
-        mapOption = {
-          center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
-          level: 3, // 지도의 확대 레벨
-        };
+    // 지도를 생성합니다
+    var map = new kakao.maps.Map(mapContainer, mapOption);
 
-      // 지도를 생성합니다
-      var map = new kakao.maps.Map(mapContainer, mapOption);
+    // 장소 검색 객체를 생성합니다
+    var ps = new kakao.maps.services.Places();
 
-      // 장소 검색 객체를 생성합니다
-      var ps = new kakao.maps.services.Places();
+    // 키워드로 장소를 검색합니다
+    ps.keywordSearch("<%=query%>", placesSearchCB);
 
-      // 키워드로 장소를 검색합니다
-      ps.keywordSearch("<%=query%>", placesSearchCB);
+    // 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
 
-      // 키워드 검색 완료 시 호출되는 콜백함수 입니다
-      function placesSearchCB(data, status, pagination) {
-        if (status === kakao.maps.services.Status.OK) {
-          // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-          // LatLngBounds 객체에 좌표를 추가합니다
-          var bounds = new kakao.maps.LatLngBounds();
+    // 키워드 검색 완료 시 호출되는 콜백함수 입니다
+    function placesSearchCB(data, status, pagination) {
+      if (status === kakao.maps.services.Status.OK) {
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+        // LatLngBounds 객체에 좌표를 추가합니다
+        var bounds = new kakao.maps.LatLngBounds();
 
-          for (var i = 0; i < data.length; i++) {
-            console.log(data[i]);
-            displayMarker(data[i]);
-            bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-          }
-
-          // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-          map.setBounds(bounds);
+        for (var i = 0; i < data.length; i++) {
+          console.log(data[i]);
+          displayMarker(data[i]);
+          bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
         }
-      }
 
-      // 지도에 마커를 표시하는 함수입니다
-      function displayMarker(place) {
-        // 마커를 생성하고 지도에 표시합니다
-        console.log(map);
-        var marker = new kakao.maps.Marker({
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+        map.setBounds(bounds);
+      }
+    }
+
+    // 지도에 마커를 표시하는 함수입니다
+    function displayMarker(place) {
+      // 마커를 생성하고 지도에 표시합니다
+      console.log(map);
+      var marker = new kakao.maps.Marker({
+        map: map,
+        position: new kakao.maps.LatLng(place.y, place.x),
+      });
+
+      var demoNumber = Math.floor(Math.random() * 40);
+      // 마커에 클릭이벤트를 등록합니다
+      kakao.maps.event.addListener(marker, "click", function () {
+        // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+
+        var content = `<div class="info-window">
+              <div class="title">${place.place_name}</div>
+              <div class="text">현재 인원</div>
+              <div class="count">${demoNumber}</div>
+            </div>`;
+
+        var overlay = new kakao.maps.CustomOverlay({
+          content: content,
           map: map,
-          position: new kakao.maps.LatLng(place.y, place.x),
+          position: marker.getPosition()
         });
+        overlay.setMap(map);
 
-        var demoNumber = Math.floor(Math.random() * 40);
-        // 마커에 클릭이벤트를 등록합니다
-        kakao.maps.event.addListener(marker, "click", function () {
-          // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-          infowindow.setContent(
-            '<div style="padding:5px;font-size:12px;height:70px">' +
-              place.place_name +
-              "<br>현재 인원 : " +
-              demoNumber +
-              "<br>" +
-              "</div>"
-          );
-          infowindow.open(map, marker);
+        kakao.maps.event.addListener(map, "click", function () {
+          overlay.setMap(null);
         });
-      }
-    </script>
-  </body>
+      });
+    }
+  </script>
+</body>
+
 </html>
