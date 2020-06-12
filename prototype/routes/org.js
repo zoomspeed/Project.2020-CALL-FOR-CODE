@@ -78,8 +78,12 @@ router.get("/history", function (req, res) {
     collection.find(query).toArray(function (err, result) {
       if (err) throw err;
       console.log(result);
+<<<<<<< HEAD
       res.render("userList", { userList: result });
       client.close();
+=======
+      res.render('userList', { userList: { data: result } });
+>>>>>>> 52a7e882a78d438c3b86d9cf117122e6559783b0
     });
   });
 });
