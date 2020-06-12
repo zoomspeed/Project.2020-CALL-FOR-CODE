@@ -1,6 +1,6 @@
 // Nodejs encryption with CTR
 const crypto = require('crypto');
-const { algorithm, key, iv } = require('/config.json');
+const { algorithm, key, iv } = require('../../config.json');
 
 const encrypt = (text) => { // Buffer.from(key)
     text = JSON.stringify(text);

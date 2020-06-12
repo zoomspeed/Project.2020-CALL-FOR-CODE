@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 /** Custom Require **/      
 require("dotenv").config();
-const router = require('routes');
+const router = require('./routes');
 
 /** Route **/
 app.use("/", router);

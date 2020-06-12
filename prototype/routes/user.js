@@ -1,14 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const user = require('data/user.json');
-const { encrypt } = require('javascripts/utils');
+const QR = require('qrcode');
+const user = require('../public/data/user.json');
+const { encrypt } = require('../public/javascripts/utils');
 
 // 사용자 데이터 불러올 때 index
 let idx = 0;
 
 // QR 생성
 router.get('/QR', (req, res) => {
-  
+
   // 체온 랜덤 생성
   const temperature = Math.random() * (39 - 35.7) + 35.7;
   
@@ -22,14 +23,12 @@ router.get('/QR', (req, res) => {
   const result = encrypt(JSON.stringify(data)).encryptedData;
 
   // 스캔 시 전송할 url
-  const url = 'https://sos.mybluemix.net/attend?qr=' + result;
+  const url = 'https://sos.mybluemix.net/org/attend?qr=' + result;
 
   // QR 생성
   QR.toDataURL(url, { errorCorrectionLevel: 'L' }, function (err, code) {
     res.render('scan', { title: 'VISITOR', qr: code });
   });
-
-  
 });
 
 // Map
