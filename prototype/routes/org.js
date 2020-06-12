@@ -1,11 +1,11 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { iv } = require('../config.json');
-const { decrypt } = require('../public/javascripts/utils');
-const MongoClient = require('../database/connection');
+const { iv } = require("../config.json");
+const { decrypt } = require("../public/javascripts/utils");
+const MongoClient = require("../database/connection");
 
-router.get('/', function(req, res) {
-  res.send('respond with a resource');
+router.get("/", function (req, res) {
+  res.send("respond with a resource");
 });
 
 // 출입
@@ -22,16 +22,29 @@ router.get("/attend", function (req, res) {
   MongoClient.connect((err, client) => {
     const collection = client.db("sos").collection("userInOutHistory");
 
-    collection.insertOne(
-      decryptData,
-      { forceServerObjectId: true },
-      function (err, result) {
-        if (err) throw err;
-        console.log(result);
-        res.render("attend", { name: decryptData.name });
-        client.close();
-      }
-    );
+    collection.insertOne(decryptData, { forceServerObjectId: true }, function (
+      err,
+      result
+    ) {
+      if (err) throw err;
+      console.log(result);
+      res.render("attend", { name: decryptData.name });
+      client.close();
+    });
+  });
+});
+
+// 출입
+router.get("/test", function (req, res) {
+  // DB 저장
+  MongoClient.connect((err, client) => {
+    const collection = client.db("sos").collection("userInOutHistory");
+    query = {};
+    collection.find(query).toArray(function (err, result) {
+      if (err) throw err;
+      console.log(result);
+      client.close();
+    });
   });
 });
 
