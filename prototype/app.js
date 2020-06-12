@@ -7,7 +7,8 @@ const http = require("http"),
   cookieParser = require("cookie-parser"),
   expressErrorHandler = require("express-error-handler"),
   QR = require("qrcode"),
-  crypto = require("crypto");
+  crypto = require("crypto"),
+  logger = require('morgan');
 const { algorithm, key, iv } = require("./config.json");
 require("dotenv").config();
 
@@ -23,18 +24,23 @@ const client = new MongoClient(uri, {
 /** Server Parameters Setting **/
 const app = express();
 app.set("port", process.env.PORT || 3000);
-app.set("views", __dirname + "/public");
+app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use("/public", static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 
 /** Route **/
 const router = express.Router();
 
-//////QR 생성하기//////나중에 "/QR"로 라우트 할 것임
 router.get("/", function (req, res) {
+  res.render("index");
+})
+
+//////QR 생성하기//////나중에 "/QR"로 라우트 할 것임
+router.get("/QR", function (req, res) {
   const temperature = Math.random() * (39 - 35.7) + 35.7; // 체온 랜덤 생성
 
   const data = {
@@ -48,7 +54,7 @@ router.get("/", function (req, res) {
   const url = "https://sos.mybluemix.net/attend?qr=" + result; // 스캔 시 전송할 url 만들기
 
   QR.toDataURL(url, { errorCorrectionLevel: "L" }, function (err, code) {
-    res.render("index", { title: "VISITOR", qr: code });
+    res.render("scan", { title: "VISITOR", qr: code });
   }); // QR코드 생성
 });
 
