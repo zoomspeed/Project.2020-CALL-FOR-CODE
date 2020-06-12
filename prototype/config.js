@@ -11,6 +11,3 @@ const { algorithm, key, iv } = require("./config.json");
 console.log("algorithm", algorithm);
 console.log("key", key);
 console.log("iv", iv);
-
-const user = require("./public/data/user.json");
-console.log(user);
