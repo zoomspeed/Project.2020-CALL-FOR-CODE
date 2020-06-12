@@ -23,7 +23,7 @@ router.get('/attend', (req, res) => {
     const collection = client.db('sos').collection('userInOutHistory');
 
     collection.insertOne(
-      { ...decryptData, in: new Date() },
+      { ...decryptData, org: "박물관", in: new Date() },
       { forceServerObjectId: true },
       (err, result) => {
         if (err) throw err;
@@ -36,16 +36,13 @@ router.get('/attend', (req, res) => {
 });
 
 // 출입자 데이터
-router.get('/history/:page', (req, res) => {
-  MongoClient.connect((err, client) => {
+router.get('/history', (req, res) => {
+  MongoClient.connect(async (err, client) => {
     const collection = client.db('sos').collection('userInOutHistory');
-    const page = parseInt(req.params.page);
-
-    collection.find({}, { sort: [['in', 1]], min: page * 10, max: (page + 1) * 10 }, (err, result) => {
-      if(err) throw err;
-      console.log(result);
-      res.render('userList', { userList: result });
-    });
+    // console.log(collection);
+    const result = await collection.find();
+    console.log(result);
+    res.render('userList', { userList: result });
   });
 });
 
