@@ -9,7 +9,7 @@ router.get('/', function(req, res) {
 });
 
 // 출입
-router.get("/attend", function (req, res) {
+router.get('/attend', (req, res) => {
   const qr = req.query.qr;
 
   // 복호화 데이터 생성
@@ -20,18 +20,32 @@ router.get("/attend", function (req, res) {
 
   // DB 저장
   MongoClient.connect((err, client) => {
-    const collection = client.db("sos").collection("userInOutHistory");
+    const collection = client.db('sos').collection('userInOutHistory');
 
     collection.insertOne(
-      decryptData,
+      { ...decryptData, in: new Date() },
       { forceServerObjectId: true },
-      function (err, result) {
+      (err, result) => {
         if (err) throw err;
         console.log(result);
-        res.render("attend", { name: decryptData.name });
+        res.render('attend', { name: decryptData.name });
         client.close();
       }
     );
+  });
+});
+
+// 출입자 데이터
+router.get('/history/:page', (req, res) => {
+  MongoClient.connect((err, client) => {
+    const collection = client.db('sos').collection('userInOutHistory');
+    const page = parseInt(req.params.page);
+
+    collection.find({}, { sort: [['in', 1]], min: page * 10, max: (page + 1) * 10 }, (err, result) => {
+      if(err) throw err;
+      console.log(result);
+      res.render('userList', { userList: result });
+    });
   });
 });
 
