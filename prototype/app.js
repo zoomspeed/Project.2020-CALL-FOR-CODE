@@ -1,25 +1,13 @@
 /** Require Setting **/
 const http = require("http"),
-  express = require("express"),
-  path = require("path"),
-  static = require("serve-static"),
-  bodyParser = require("body-parser"),
-  cookieParser = require("cookie-parser"),
-  expressErrorHandler = require("express-error-handler"),
-  QR = require("qrcode"),
-  crypto = require("crypto"),
-  logger = require('morgan');
-const { algorithm, key, iv } = require("./config.json");
-require("dotenv").config();
-
-/** Database Setting **/
-const MongoClient = require("mongodb").MongoClient;
-const uri =
-  "mongodb+srv://rhie:" + process.env.DB_PWD + "@rhie-b1dyf.mongodb.net/";
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+      express = require("express"),
+      path = require("path"),
+      bodyParser = require("body-parser"),
+      cookieParser = require("cookie-parser"),
+      expressErrorHandler = require("express-error-handler"),
+      QR = require("qrcode"),
+      crypto = require("crypto"),
+      logger = require('morgan');
 
 /** Server Parameters Setting **/
 const app = express();
@@ -32,12 +20,13 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+/** Custom Require **/      
+require("dotenv").config();
+const route = require('routes/index');
+
 /** Route **/
 const router = express.Router();
-
-router.get("/", function (req, res) {
-  res.render("index");
-})
+router.use("/", route);
 
 //////QR 생성하기//////나중에 "/QR"로 라우트 할 것임
 router.get("/QR", function (req, res) {
