@@ -1,15 +1,15 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { iv } = require('../config.json');
-const { decrypt } = require('../public/javascripts/utils');
-const MongoClient = require('../database/connection');
+const { iv } = require("../config.json");
+const { decrypt } = require("../public/javascripts/utils");
+const MongoClient = require("../database/connection");
 
-router.get('/', function(req, res) {
-  res.send('respond with a resource');
+router.get("/", function (req, res) {
+  res.send("respond with a resource");
 });
 
 // 출입
-router.get('/attend', (req, res) => {
+router.get("/attend", (req, res) => {
   const qr = req.query.qr;
 
   // 복호화 데이터 생성
@@ -40,8 +40,12 @@ router.get('/history', (req, res) => {
   MongoClient.connect(async (err, client) => {
     const collection = client.db('sos').collection('userInOutHistory');
     // console.log(collection);
-    const result = await collection.find();
-    console.log(result);
+    query = {};
+    collection.find(query).toArray(function (err, result) {
+      if (err) throw err;
+      console.log(result);
+      client.close();
+    });
     res.render('userList', { userList: result });
   });
 });
