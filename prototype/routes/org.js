@@ -69,7 +69,7 @@ router.post("/leave", function (req, res) {
 
 // 출입
 router.get("/history", function (req, res) {
-  // DB 저장
+
   MongoClient.connect((err, client) => {
     const collection = client.db("sos").collection("userInOutHistory");
     query = {};
