@@ -28,7 +28,7 @@ router.get("/attend", function (req, res) {
       function (err, result) {
         if (err) throw err;
         console.log(result);
-        res.render("attend", { result: decryptData.name });
+        res.render("attend", { name: decryptData.name });
         client.close();
       }
     );

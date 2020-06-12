@@ -3,7 +3,6 @@ const crypto = require('crypto');
 const { algorithm, key, iv } = require('../../config.json');
 
 const encrypt = (text) => { // Buffer.from(key)
-    text = JSON.stringify(text);
     let cipher = crypto.createCipheriv(algorithm, key, iv);
     let encrypted = cipher.update(text);
     encrypted = Buffer.concat([encrypted, cipher.final()]);
