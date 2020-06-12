@@ -18,9 +18,6 @@ router.get("/QR", (req, res) => {
   if (idx >= data.length) {
     idx = 0;
   }
-  const orgList = ["음식점", "학원", "학교", "병원"];
-  orgList[Math.floor(Math.random() * 4)];
-  data.temperature = temperature.toFixed(1);
 
   // 암호화
   const result = encrypt(JSON.stringify(data)).encryptedData;
