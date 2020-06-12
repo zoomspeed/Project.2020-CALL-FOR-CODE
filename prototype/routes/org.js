@@ -82,4 +82,18 @@ router.get("/history", function (req, res) {
   });
 });
 
+router.get("/getUserList.json", function (req, res) {
+  // DB 저장
+  MongoClient.connect((err, client) => {
+    const collection = client.db("sos").collection("userInOutHistory");
+    query = {};
+    if (err) throw err;
+    collection.find(query).toArray(function (err, result) {
+      if (err) throw err;
+      console.log(result);
+      res.json({ userList: { data: result } });
+    });
+  });
+});
+
 module.exports = router;
