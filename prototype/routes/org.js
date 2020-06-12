@@ -29,7 +29,6 @@ router.get("/attend", (req, res) => {
         if (err) throw err;
         console.log(result);
         res.render('attend', { name: decryptData.name });
-        client.close();
       }
     );
   });
@@ -39,14 +38,12 @@ router.get("/attend", (req, res) => {
 router.get('/history', (req, res) => {
   MongoClient.connect(async (err, client) => {
     const collection = client.db('sos').collection('userInOutHistory');
-    // console.log(collection);
     query = {};
     collection.find(query).toArray(function (err, result) {
       if (err) throw err;
       console.log(result);
-      client.close();
+      res.render('userList', { userList: { data: result } });
     });
-    res.render('userList', { userList: result });
   });
 });
 
