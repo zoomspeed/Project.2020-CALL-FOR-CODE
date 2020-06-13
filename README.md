@@ -113,7 +113,7 @@
 
 ## 3. WHAT : 그래서 우리가 만든 결과물은
 
--
+https://sos.mybluemix.net/
 
 ## 4. 마무리하면서
 
