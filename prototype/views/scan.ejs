@@ -3,10 +3,18 @@
   <head>
     <title>QR 코드 제시</title>
   </head>
-  <body>
+  <body style="text-align: center;">
     <h1><%= title %></h1>
     <p>방문자 스마트폰입니다.</p>
     <p>사업자가 방문자의 QR을 스캔할 것입니다.</p>
     <img src="<%= qr %>" />
+    <div>유효시간 <span id="tick" style="font-weight: bold;">15</span>초</div>
+    <script>
+      let timer = 15;
+      setInterval(() => { 
+        if(timer > 0) timer --;
+        document.getElementById('tick').innerHTML = timer;
+      }, 1000);
+    </script>
   </body>
 </html>
